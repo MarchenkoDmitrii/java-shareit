@@ -11,7 +11,7 @@ import java.util.Objects;
 public class ItemValidate {
     public static void validate(ItemDto item, Long idUser) {
 
-        if (!UserServiceImpl.userStorage.containsKey(idUser)) {
+        if (!UserServiceImpl.userStorageUnmod.containsKey(idUser)) {
             System.out.println("test");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -28,7 +28,7 @@ public class ItemValidate {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
-        if (ItemServiceImpl.itemStorage.values().stream()
+        if (ItemServiceImpl.itemStorageUnmod.values().stream()
                         .anyMatch(item1 -> Objects.equals(item1.getName(), item.getName()))) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
@@ -36,8 +36,8 @@ public class ItemValidate {
 
     public static void validate(ItemDto item, Long idUser, Long idItem) {
         // Проверка, что владелец совпадает с userId
-        if (ItemServiceImpl.itemStorage.containsKey(idItem)) {
-            if (!ItemServiceImpl.itemStorage.get(idItem).getOwner().getId().equals(idUser)) {
+        if (ItemServiceImpl.itemStorageUnmod.containsKey(idItem)) {
+            if (!ItemServiceImpl.itemStorageUnmod.get(idItem).getOwner().getId().equals(idUser)) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);
             }
         }

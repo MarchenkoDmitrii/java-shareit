@@ -11,7 +11,8 @@ import java.util.*;
 @Component
 public class UserServiceImpl {
     public Long idUser = 0L;
-    public static final Map<Long, User> userStorage = new HashMap<>();
+    private static final Map<Long, User> userStorage = new HashMap<>();
+    public static final Map<Long, User> userStorageUnmod = Collections.unmodifiableMap(userStorage);
 
     public List<User> getAllUserItems() {
         return new ArrayList<>(userStorage.values());

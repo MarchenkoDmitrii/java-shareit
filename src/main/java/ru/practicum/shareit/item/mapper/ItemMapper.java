@@ -20,7 +20,7 @@ public class ItemMapper {
                 itemDto.getName(),
                 itemDto.getDescription(),
                 itemDto.getAvailable(),
-                UserServiceImpl.userStorage.get(userId),
+                UserServiceImpl.userStorageUnmod.get(userId),
                 itemDto.getRequest());
     }
 

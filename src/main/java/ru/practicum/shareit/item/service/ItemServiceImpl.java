@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserServiceImpl;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -11,11 +12,12 @@ import java.util.stream.Collectors;
 @Component
 public class ItemServiceImpl {
     public Long idItem = 0L;
-    public static final Map<Long, Item> itemStorage = new HashMap<>();
+    private static final Map<Long, Item> itemStorage = new HashMap<>();
+    public static final Map<Long, Item> itemStorageUnmod = Collections.unmodifiableMap(itemStorage);
 
     public List<Item> getAllUserItems(Long id) {
         return itemStorage.values().stream()
-                .filter(owner -> owner.getOwner().equals(UserServiceImpl.userStorage.get(id)))
+                .filter(owner -> owner.getOwner().equals(UserServiceImpl.userStorageUnmod.get(id)))
                 .collect(Collectors.toList());
     }
 

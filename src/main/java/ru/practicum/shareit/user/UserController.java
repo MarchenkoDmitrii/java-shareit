@@ -36,7 +36,7 @@ public class UserController {
         UserValidate.userValidate(userDto, userId);
         // Логика обновления вещи
          userService.updateUser(userId, userDto);
-        return ResponseEntity.ok().body(UserServiceImpl.userStorage.get(userId));
+        return ResponseEntity.ok().body(UserServiceImpl.userStorageUnmod.get(userId));
     }
 
     @GetMapping("/{userId}")

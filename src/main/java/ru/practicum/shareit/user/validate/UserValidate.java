@@ -24,7 +24,7 @@ public class UserValidate {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email format");
             }
             // Проверка на дубликат email при создании нового пользователя
-            if (UserServiceImpl.userStorage.values().stream()
+            if (UserServiceImpl.userStorageUnmod.values().stream()
                     .anyMatch(existingUser -> existingUser.getEmail().equals(user.getEmail()))) {
                 throw new ResponseStatusException(HttpStatus.valueOf(409), "Email already exists");
             }
@@ -44,7 +44,7 @@ public class UserValidate {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email format");
             }
             // Проверка на дубликат email при обновлении пользователя
-            if (UserServiceImpl.userStorage.values().stream()
+            if (UserServiceImpl.userStorageUnmod.values().stream()
                     .filter(user1 -> !user1.getId().equals(idUser))
                     .anyMatch(existingUser -> existingUser.getEmail().equals(user.getEmail()))) {
                 throw new ResponseStatusException(HttpStatus.valueOf(409), "Email already exists");
