@@ -17,11 +17,11 @@ public class ItemService {
        return itemServiceImpl.getAllUserItems(id);
     }
 
-    public Item getItemById(Long id){
+    public Item getItemById(Long id) {
         return itemServiceImpl.getItemById(id);
     }
 
-    public Item getItemByName(String name){
+    public Item getItemByName(String name) {
         return itemServiceImpl.getItemByName(name);
     }
 

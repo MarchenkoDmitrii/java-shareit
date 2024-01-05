@@ -33,6 +33,7 @@ public class ItemValidate {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
+
     public static void validate(ItemDto item, Long idUser, Long idItem) {
         // Проверка, что владелец совпадает с userId
         if (ItemServiceImpl.itemStorage.containsKey(idItem)) {

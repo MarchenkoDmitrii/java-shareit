@@ -43,6 +43,7 @@ public class UserServiceImpl {
         }
         return userStorage.get(userId);
     }
+
     public void deleteUserById(Long userId) {
         if (!userStorage.containsKey(userId)) {
             // Если пользователя с указанным ID нет, вы можете выбрасывать исключение или выполнять другую логику

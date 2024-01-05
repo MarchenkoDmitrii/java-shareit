@@ -17,7 +17,7 @@ public class UserService {
         return userService.getAllUserItems();
     }
 
-    public User getUserById(long id){
+    public User getUserById(long id) {
         return userService.getUserById(id);
     }
 

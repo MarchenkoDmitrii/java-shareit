@@ -12,6 +12,7 @@ public class UserMapper {
                 user.getEmail()
         );
     }
+
     public static User toUser(UserDto user) {
         return new User(
                 UserService.idUser,

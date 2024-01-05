@@ -5,8 +5,8 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserServiceImpl;
 
-import java.util.Optional;
 public class UserValidate {
+
     public static void userValidate(UserDto user) {
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is null");
@@ -32,12 +32,11 @@ public class UserValidate {
             throw new ResponseStatusException(HttpStatus.valueOf(400), "Email cannot be empty");
         }
     }
-    public static void userValidate(UserDto user, long idUser) {
 
+    public static void userValidate(UserDto user, long idUser) {
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is null");
         }
-
         // Валидация email
         if (user.getEmail() != null) {
             // Валидация формата email при наличии значения

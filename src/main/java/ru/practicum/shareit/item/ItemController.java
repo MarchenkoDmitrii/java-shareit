@@ -21,6 +21,7 @@ public class ItemController {
 
     @Autowired
     ItemService itemService;
+
     @PostMapping
     public ResponseEntity<Item> addItem(@RequestHeader("X-Sharer-User-Id") Long userId,
                                           @RequestBody ItemDto itemDto) {
@@ -36,7 +37,7 @@ public class ItemController {
     public ResponseEntity<Item> updateItem(@PathVariable Long itemId,
                                              @RequestHeader("X-Sharer-User-Id") Long userId,
                                              @RequestBody ItemDto itemUpdateRequest) {
-        if (userId == null){
+        if (userId == null) {
             return ResponseEntity.status(500).build();
         }
         ItemValidate.validate(itemUpdateRequest, userId, itemId);
@@ -70,5 +71,4 @@ public class ItemController {
         List<Item> foundItems = itemService.searchItems(searchText);
         return ResponseEntity.ok(foundItems);
     }
-    
 }

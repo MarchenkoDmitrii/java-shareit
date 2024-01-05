@@ -23,12 +23,14 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
     @PostMapping
     public ResponseEntity<User> addUser(@RequestBody UserDto userDto) {
         UserValidate.userValidate(userDto);
         userService.createUser(userDto);
         return ResponseEntity.status(200).body(UserMapper.toUser(userDto));
     }
+
     @PatchMapping("/{userId}")
     public ResponseEntity<User> updateUser(@PathVariable Long userId,
                            @RequestBody UserDto userDto) {
@@ -37,6 +39,7 @@ public class UserController {
          userService.updateUser(userId, userDto);
         return ResponseEntity.ok().body(UserServiceImpl.userStorage.get(userId));
     }
+
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable Long userId) {
         // Логика получения информации о вещи по её идентификатору
@@ -48,6 +51,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         // Логика получения информации о вещи по её идентификатору
@@ -59,6 +63,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);

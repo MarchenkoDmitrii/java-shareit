@@ -24,7 +24,7 @@ public class ItemServiceImpl {
                 .orElseThrow(() -> new IllegalArgumentException("Нет такой вещи"));
     }
 
-    public Item getItemByName (String name) {
+    public Item getItemByName(String name) {
         return  itemStorage.values().stream()
                 .filter(item -> Objects.equals(item.getName(), name))
                 .findAny()
@@ -47,7 +47,7 @@ public class ItemServiceImpl {
             itemStorage.get(itemId).setDescription(itemDto.getDescription());
         }
 
-        if (itemDto.getAvailable()!= null) {
+        if (itemDto.getAvailable() != null) {
             itemStorage.get(itemId).setAvailable(itemDto.getAvailable());
         }
         return itemStorage.get(itemId);
