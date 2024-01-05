@@ -3,15 +3,10 @@ package ru.practicum.shareit.user.service;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
-import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.validate.UserValidate;
-
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class UserServiceImpl {
