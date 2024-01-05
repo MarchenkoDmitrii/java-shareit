@@ -13,9 +13,9 @@ public class UserMapper {
         );
     }
 
-    public static User toUser(UserDto user) {
+    public static User toUser(UserDto user, Long idUser) {
         return new User(
-                UserService.idUser,
+                idUser,
                 user.getName(),
                 user.getEmail()
         );

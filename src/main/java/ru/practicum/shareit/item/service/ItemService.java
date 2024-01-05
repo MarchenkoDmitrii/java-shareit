@@ -10,7 +10,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemService {
 
-    public static Long idItem = 0L;
+
     private final ItemServiceImpl itemServiceImpl;
 
     public List<Item> allUsersItems(Long id) {
@@ -26,7 +26,7 @@ public class ItemService {
     }
 
     public Item createItem(ItemDto item, Long id) {
-        idItem++;
+
       return itemServiceImpl.createItem(item, id);
     }
 

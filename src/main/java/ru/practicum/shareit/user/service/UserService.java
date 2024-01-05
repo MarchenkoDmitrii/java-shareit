@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserServiceImpl userService;
-    public static long idUser = 0L;
+
 
     public List<User> allUsers() {
         return userService.getAllUserItems();
@@ -22,7 +22,6 @@ public class UserService {
     }
 
     public User createUser(UserDto user) {
-        idUser++;
         return userService.createUser(user);
     }
 

@@ -10,7 +10,8 @@ import java.util.*;
 
 @Component
 public class UserServiceImpl {
-    public static HashMap<Long, User> userStorage = new HashMap<>();
+    public Long idUser = 0L;
+    public static final HashMap<Long, User> userStorage = new HashMap<>();
 
     public List<User> getAllUserItems() {
         return new ArrayList<>(userStorage.values());
@@ -29,9 +30,12 @@ public class UserServiceImpl {
     }
 
     public User createUser(UserDto user) {
-        userStorage.put(UserService.idUser, UserMapper.toUser(user));
-        return UserMapper.toUser(user);
+        idUser++;
+        User put = UserMapper.toUser(user, idUser);
+        userStorage.put(idUser, put);
+        return put;
     }
+
 
     public User updateUser(Long userId, UserDto user) {
         if (user.getName() != null) {

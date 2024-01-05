@@ -27,8 +27,8 @@ public class UserController {
     @PostMapping
     public ResponseEntity<User> addUser(@RequestBody UserDto userDto) {
         UserValidate.userValidate(userDto);
-        userService.createUser(userDto);
-        return ResponseEntity.status(200).body(UserMapper.toUser(userDto));
+        User user = userService.createUser(userDto);
+        return ResponseEntity.status(200).body(user);
     }
 
     @PatchMapping("/{userId}")

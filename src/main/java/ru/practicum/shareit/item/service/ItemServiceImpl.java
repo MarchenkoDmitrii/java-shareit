@@ -11,7 +11,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class ItemServiceImpl {
-    public static HashMap<Long, Item> itemStorage = new HashMap<>();
+    public Long idItem = 0L;
+    public static final HashMap<Long, Item> itemStorage = new HashMap<>();
 
     public List<Item> getAllUserItems(Long id) {
         return itemStorage.values().stream()
@@ -32,9 +33,10 @@ public class ItemServiceImpl {
     }
 
     public Item createItem(ItemDto itemDto, Long userId) {
-        Item item = ItemMapper.toItem(itemDto, userId);
-        itemStorage.put(ItemService.idItem, item);
-        return itemStorage.get(ItemService.idItem);
+        idItem++;
+        Item item = ItemMapper.toItem(itemDto, userId, idItem);
+        itemStorage.put(idItem, item );
+        return item;
     }
 
     public Item updateItem(Long itemId, ItemDto itemDto) {
