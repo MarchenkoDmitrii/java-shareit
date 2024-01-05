@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Component
 public class ItemServiceImpl {
     public Long idItem = 0L;
-    public static final HashMap<Long, Item> itemStorage = new HashMap<>();
+    public static final Map<Long, Item> itemStorage = new HashMap<>();
 
     public List<Item> getAllUserItems(Long id) {
         return itemStorage.values().stream()
