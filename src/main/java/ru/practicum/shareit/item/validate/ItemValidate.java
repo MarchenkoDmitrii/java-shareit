@@ -10,7 +10,6 @@ import java.util.Objects;
 
 public class ItemValidate {
     public static void validate(ItemDto item, Long idUser) {
-
         if (!UserServiceImpl.userStorageUnmod.containsKey(idUser)) {
             System.out.println("test");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
