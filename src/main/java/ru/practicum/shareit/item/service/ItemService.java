@@ -1,44 +1,27 @@
 package ru.practicum.shareit.item.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+
+import ru.practicum.shareit.comment.dto.CommentDto;
+import ru.practicum.shareit.comment.dto.CommentDtoOut;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.dto.ItemDtoOut;
+
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class ItemService {
 
+public interface ItemService {
+    ItemDto createItem(Long userId, ItemDto itemDto);
 
-    private final ItemServiceImpl itemServiceImpl;
+    ItemDto updateItem(Long itemId, Long userId, ItemDto itemDto);
 
-    public List<Item> allUsersItems(Long id) {
-       return itemServiceImpl.getAllUserItems(id);
-    }
+    List<ItemDtoOut> getAllUserItems(Long userId);
 
-    public Item getItemById(Long id) {
-        return itemServiceImpl.getItemById(id);
-    }
+    ItemDtoOut getItemById(Long itemId, Long userId);
 
-    public Item getItemByName(String name) {
-        return itemServiceImpl.getItemByName(name);
-    }
+    List<ItemDtoOut> searchItemsByText(String searchText);
 
-    public Item createItem(ItemDto item, Long id) {
+    CommentDtoOut createComment(Long userId, CommentDto commentDto, Long itemId);
 
-      return itemServiceImpl.createItem(item, id);
-    }
+    void deleteComment(Long commentId);
 
-    public Item updateItem(Long itemId, ItemDto itemDto) {
-       return itemServiceImpl.updateItem(itemId, itemDto);
-    }
-
-    public List<Item> searchItems(String searchText) {
-        // Логика поиска вещей по тексту в названии или описании в репозитории
-        return itemServiceImpl.searchItemsByText(searchText);
-    }
-
-    public void deleteItem(Item item) {
-    }
 }

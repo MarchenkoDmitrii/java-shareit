@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
-import ru.practicum.shareit.user.service.UserServiceImpl;
-import ru.practicum.shareit.user.validate.UserValidate;
 
 import java.util.List;
 
@@ -22,18 +20,16 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> addUser(@RequestBody UserDto userDto) {
-        UserValidate.userValidate(userDto);
-        User user = userService.createUser(userDto);
+        User user = userService.saveUser(userDto);
         return ResponseEntity.status(200).body(user);
     }
 
     @PatchMapping("/{userId}")
     public ResponseEntity<User> updateUser(@PathVariable Long userId,
-                           @RequestBody UserDto userDto) {
-        UserValidate.userValidate(userDto, userId);
+                                           @RequestBody UserDto userDto) {
         // Логика обновления вещи
-         userService.updateUser(userId, userDto);
-        return ResponseEntity.ok().body(UserServiceImpl.userStorageUnmod.get(userId));
+        User user = userService.updateUser(userId, userDto);
+        return ResponseEntity.ok().body(user);
     }
 
     @GetMapping("/{userId}")
@@ -51,7 +47,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         // Логика получения информации о вещи по её идентификатору
-        List<User> userDto = userService.allUsers();
+        List<User> userDto = userService.getAllUsers();
 
         if (userDto != null) {
             return ResponseEntity.status(200).body(userDto);
