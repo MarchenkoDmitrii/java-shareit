@@ -96,13 +96,13 @@ public class ItemServiceImpl implements ItemService {
                 .max((time1, time2) -> LocalDateTime.parse(time1.getEnd(), formatter)
                         .compareTo(LocalDateTime.parse(time2.getStart(), formatter)))
                 .map(BookingMapper::toBookingDtoOutItem).orElse(null);
-        BookingDtoOutItem NextBooking = bookingDTOList.stream()
+        BookingDtoOutItem nextBooking = bookingDTOList.stream()
                 .filter(bookingDtoOut -> !LocalDateTime.parse(bookingDtoOut.getStart())
                         .isBefore(LocalDateTime.now())).min((time1, time2) -> LocalDateTime.parse(time1.getEnd(), formatter)
                         .compareTo(LocalDateTime.parse(time2.getStart(), formatter)))
                 .map(BookingMapper::toBookingDtoOutItem).orElse(null);
         itemDtoOut.setLastBooking(lastBooking);
-        itemDtoOut.setNextBooking(NextBooking);
+        itemDtoOut.setNextBooking(nextBooking);
         return itemDtoOut;
     }
 

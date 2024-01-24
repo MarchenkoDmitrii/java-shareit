@@ -15,11 +15,10 @@ public class ValidationExceptionHandler {
 
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<Object> handleValidationException(ValidationException ex) {
-        // Заменяем текст ошибки
-        String error_message = "Unknown state: UNSUPPORTED_STATUS";
+        String errorMessage = "Unknown state: UNSUPPORTED_STATUS";
 
         CustomErrorResponse errorResponse = new CustomErrorResponse(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
-                500, error_message, "/bookings");
+                500, errorMessage, "/bookings");
 
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
