@@ -1,18 +1,15 @@
 package ru.practicum.shareit.comment.model;
 
-import lombok.*;
+import lombok.Data;
+import lombok.ToString;
 import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
-@RequiredArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "comments")
-@Getter
-@Setter
 @ToString
 public class Comment {
     @Id
@@ -25,7 +22,7 @@ public class Comment {
     @Column(name = "item_id")
     private Long itemId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "author_id")
     @ToString.Exclude
     private User authorId;

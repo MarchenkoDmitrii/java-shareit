@@ -1,6 +1,6 @@
 package ru.practicum.shareit.booking.service;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +14,7 @@ import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.model.StatusBooking;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
@@ -24,19 +24,23 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class BookingServiceImpl implements BookingService {
-    private final BookingRepository bookingRepository;
-    private final ItemRepository itemRepository;
+    private final ItemService itemService;
     private final UserService userService;
+    private final BookingRepository bookingRepository;
+
+    public BookingServiceImpl(@Lazy ItemService itemService, UserService userService, BookingRepository bookingRepository) {
+        this.itemService = itemService;
+        this.userService = userService;
+        this.bookingRepository = bookingRepository;
+    }
 
     @Override
     @Transactional
     public BookingDtoOut add(Long userId, BookingDto bookingDto) {
         User user = userService.getUserById(userId);
-        Item item = itemRepository.findById(bookingDto.getItemId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Item item = itemService.findItemById(bookingDto.getItemId());
         validate(bookingDto, user, item);
         Booking booking = BookingMapper.toBooking(bookingDto, user, item);
         return BookingMapper.toBookingDtoOut(bookingRepository.save(booking));
@@ -142,6 +146,21 @@ public class BookingServiceImpl implements BookingService {
             default:
                 throw new ValidationException();
         }
+    }
+
+    @Override
+    public List<Booking> findAllByItemInAndStatusOrderByStartAsc(List<Item> items, StatusBooking status) {
+        return bookingRepository.findAllByItemInAndStatusOrderByStartAsc(items, status);
+    }
+
+    @Override
+    public List<Booking> findAllByItemAndStatusOrderByStartAsc(Item item, StatusBooking bookingStatus) {
+        return bookingRepository.findAllByItemAndStatusOrderByStartAsc(item, bookingStatus);
+    }
+
+    @Override
+    public List<Booking> findAllByUserBookings(Long userId, Long itemId, LocalDateTime now) {
+        return bookingRepository.findAllByUserBookings(userId, itemId, now);
     }
 
     private void validate(BookingDto bookingDto, User user, Item item) {

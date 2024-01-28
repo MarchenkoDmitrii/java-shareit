@@ -1,18 +1,16 @@
 package ru.practicum.shareit.request.model;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NonNull;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.Instant;
 
 @Data
-@RequiredArgsConstructor
-@AllArgsConstructor
 @NonNull
 @Entity
 @Table(name = "requests")
-@Getter
-@Setter
 @ToString
 public class ItemRequest {
     @Id
