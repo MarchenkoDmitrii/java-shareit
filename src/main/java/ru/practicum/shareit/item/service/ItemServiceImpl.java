@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import ru.practicum.shareit.booking.dto.BookingDtoOut;
-import ru.practicum.shareit.booking.dto.BookingDtoOutItem;
+import ru.practicum.shareit.booking.dto.BookingDtoResponse;
+import ru.practicum.shareit.booking.dto.BookingDtoResponseForItems;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.StatusBooking;
@@ -17,7 +17,7 @@ import ru.practicum.shareit.comment.dto.CommentDtoOut;
 import ru.practicum.shareit.comment.mapper.CommentMapper;
 import ru.practicum.shareit.comment.service.CommentService;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.ItemDtoOut;
+import ru.practicum.shareit.item.dto.ItemDtoResponse;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
@@ -48,7 +48,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public List<ItemDtoOut> getAllUserItems(Long userId) {
+    public List<ItemDtoResponse> getAllUserItems(Long userId) {
         List<Item> itemList = itemRepository.findAllByOwner(userId);
         itemList.sort((o1, o2) -> Math.toIntExact(o1.getId() - o2.getId()));
         List<Long> idList = itemList.stream()
@@ -58,14 +58,14 @@ public class ItemServiceImpl implements ItemService {
                 .map(CommentMapper::toCommentDtoOut)
                 .collect(groupingBy(CommentDtoOut::getItemId, toList()));
 
-        Map<Long, List<BookingDtoOut>> bookings = bookingService.findAllByItemInAndStatusOrderByStartAsc(itemList,
+        Map<Long, List<BookingDtoResponse>> bookings = bookingService.findAllByItemInAndStatusOrderByStartAsc(itemList,
                         StatusBooking.APPROVED).stream()
-                .map(BookingMapper::toBookingDtoOut)
+                .map(BookingMapper::toBookingDtoResponse)
                 .collect(groupingBy(item -> item.getItem().getId(), toList()));
 
         return itemList
                 .stream()
-                .map(item -> ItemMapper.toItemDtoOut(item, getLastBooking(bookings.get(item.getId()),
+                .map(item -> ItemMapper.toItemDtoResponse(item, getLastBooking(bookings.get(item.getId()),
                                 LocalDateTime.now()), comments.get(item.getId()),
                         getNextBooking(bookings.get(item.getId()), LocalDateTime.now())))
                 .collect(toList());
@@ -73,11 +73,11 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public ItemDtoOut getItemById(Long itemId, Long userId) {
+    public ItemDtoResponse getItemById(Long itemId, Long userId) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.valueOf(404)));
-        ItemDtoOut itemDtoOut = ItemMapper.toItemDtoOut(item);
+        ItemDtoResponse itemDtoOut = ItemMapper.toItemDtoResponse(item);
         itemDtoOut.setComments(commentService.getAllItemComments(itemId));
         if (!item.getOwner().equals(userId)) {
             return itemDtoOut;
@@ -85,22 +85,22 @@ public class ItemServiceImpl implements ItemService {
         List<Booking> bookings = bookingService
                 .findAllByItemAndStatusOrderByStartAsc(item, StatusBooking.APPROVED);
 
-        List<BookingDtoOut> bookingDTOList = bookings
+        List<BookingDtoResponse> bookingDTOList = bookings
                 .stream()
-                .map(BookingMapper::toBookingDtoOut)
+                .map(BookingMapper::toBookingDtoResponse)
                 .collect(toList());
-        BookingDtoOutItem lastBooking = bookingDTOList.stream()
+        BookingDtoResponseForItems lastBooking = bookingDTOList.stream()
                 .filter(bookingDtoOut -> !LocalDateTime.parse(bookingDtoOut.getStart())
                         .isAfter(LocalDateTime.now()))
                 .max((time1, time2) -> LocalDateTime.parse(time1.getEnd(), formatter)
                         .compareTo(LocalDateTime.parse(time2.getStart(), formatter)))
-                .map(BookingMapper::toBookingDtoOutItem).orElse(null);
+                .map(BookingMapper::toBookingResponseForItems).orElse(null);
 
-        BookingDtoOutItem nextBooking = bookingDTOList.stream()
+        BookingDtoResponseForItems nextBooking = bookingDTOList.stream()
                 .filter(bookingDtoOut -> !LocalDateTime.parse(bookingDtoOut.getStart())
                         .isBefore(LocalDateTime.now())).min((time1, time2) -> LocalDateTime.parse(time1.getEnd(), formatter)
                         .compareTo(LocalDateTime.parse(time2.getStart(), formatter)))
-                .map(BookingMapper::toBookingDtoOutItem).orElse(null);
+                .map(BookingMapper::toBookingResponseForItems).orElse(null);
         itemDtoOut.setLastBooking(lastBooking);
         itemDtoOut.setNextBooking(nextBooking);
         return itemDtoOut;
@@ -138,13 +138,13 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public List<ItemDtoOut> searchItemsByText(String searchText) {
+    public List<ItemDtoResponse> searchItemsByText(String searchText) {
         // Логика поиска вещей по тексту в названии или описании в репозитории
         if (searchText.isEmpty()) {
             return new ArrayList<>();
         }
         return itemRepository.search(searchText).stream()
-                .map(ItemMapper::toItemDtoOut)
+                .map(ItemMapper::toItemDtoResponse)
                 .collect(toList());
     }
 
@@ -153,7 +153,7 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.findById(itemId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    private BookingDtoOutItem getLastBooking(List<BookingDtoOut> bookings, LocalDateTime time) {
+    private BookingDtoResponseForItems getLastBooking(List<BookingDtoResponse> bookings, LocalDateTime time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         if (bookings == null || bookings.isEmpty()) {
             return null;
@@ -161,7 +161,7 @@ public class ItemServiceImpl implements ItemService {
         if (bookings.size() == 1) {
             return bookings.stream()
                     .filter(bookingDTO -> LocalDateTime.parse(bookingDTO.getEnd(), formatter).isBefore(time))
-                    .map(BookingMapper::toBookingDtoOutItem)
+                    .map(BookingMapper::toBookingResponseForItems)
                     .findFirst()
                     .orElse(null);
         }
@@ -170,12 +170,12 @@ public class ItemServiceImpl implements ItemService {
                 .filter(bookingDTO -> LocalDateTime.parse(bookingDTO.getEnd(), formatter).isBefore(time))
                 .sorted((time1, time2) -> LocalDateTime.parse(time2.getStart(), formatter)
                         .compareTo(LocalDateTime.parse(time1.getStart(), formatter)))
-                .map(BookingMapper::toBookingDtoOutItem)
+                .map(BookingMapper::toBookingResponseForItems)
                 .findFirst()
                 .orElse(null);
     }
 
-    private BookingDtoOutItem getNextBooking(List<BookingDtoOut> bookings, LocalDateTime time) {
+    private BookingDtoResponseForItems getNextBooking(List<BookingDtoResponse> bookings, LocalDateTime time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         if (bookings == null || bookings.isEmpty()) {
             return null;
@@ -185,7 +185,7 @@ public class ItemServiceImpl implements ItemService {
                 .stream()
                 .filter(bookingDTO -> LocalDateTime.parse(bookingDTO.getStart(), formatter).isAfter(time))
                 .findFirst()
-                .map(BookingMapper::toBookingDtoOutItem)
+                .map(BookingMapper::toBookingResponseForItems)
                 .orElse(null);
     }
 

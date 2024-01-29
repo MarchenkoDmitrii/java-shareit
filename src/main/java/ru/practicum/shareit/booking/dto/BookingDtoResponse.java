@@ -2,7 +2,7 @@ package ru.practicum.shareit.booking.dto;
 
 import lombok.*;
 import ru.practicum.shareit.booking.model.StatusBooking;
-import ru.practicum.shareit.item.dto.ItemDtoOut;
+import ru.practicum.shareit.item.dto.ItemDtoResponse;
 import ru.practicum.shareit.user.dto.UserDto;
 
 @Data
@@ -10,9 +10,9 @@ import ru.practicum.shareit.user.dto.UserDto;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class BookingDtoOut {
+public class BookingDtoResponse {
     private Long id;
-    private ItemDtoOut item;
+    private ItemDtoResponse item;
     private String start;
     private String end;
     private UserDto booker;
