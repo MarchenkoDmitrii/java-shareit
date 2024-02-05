@@ -12,12 +12,11 @@ public interface ItemService {
 
     ItemDto updateItem(Long itemId, Long userId, ItemDto itemDto);
 
-    List<ItemDtoResponse> getAllUserItems(Long userId);
+    List<ItemDtoResponse> getAllUserItems(Long userId, Integer from, Integer size);
 
     ItemDtoResponse getItemById(Long itemId, Long userId);
 
     List<ItemDtoResponse> searchItemsByText(String searchText);
 
     Item findItemById(Long itemId);
-
 }

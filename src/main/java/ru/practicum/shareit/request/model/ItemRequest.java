@@ -1,17 +1,22 @@
 package ru.practicum.shareit.request.model;
 
-import lombok.Data;
-import lombok.NonNull;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.*;
-import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NonNull
 @Entity
 @Table(name = "requests")
 @ToString
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class ItemRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +25,15 @@ public class ItemRequest {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "requestor_id")
-    private Long requestor;
+    @ManyToOne
+    @JoinColumn(name = "requestor_id", nullable = false)
+    private User requestor;
 
-    private Instant created;
+    @CreationTimestamp
+    @Column(name = "created")
+    private LocalDateTime created;
+
+    @OneToMany
+    @JoinColumn(name = "request_id")
+    private List<Item> items = new ArrayList<>();
 }

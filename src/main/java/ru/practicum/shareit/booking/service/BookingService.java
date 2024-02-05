@@ -17,9 +17,9 @@ public interface BookingService {
 
     BookingDtoResponse findBookingByUserId(Long userId, Long bookingId);
 
-    List<BookingDtoResponse> findAll(Long userId, String state);
+    List<BookingDtoResponse> findAll(Long userId, String state, Integer from, Integer size);
 
-    List<BookingDtoResponse> findAllOwner(Long userId, String state);
+    List<BookingDtoResponse> findAllOwner(Long userId, String state, Integer from, Integer size);
 
     List<Booking> findAllByItemInAndStatusOrderByStartAsc(List<Item> items, StatusBooking status);
 
