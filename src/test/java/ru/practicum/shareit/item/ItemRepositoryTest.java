@@ -5,15 +5,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.annotation.DirtiesContext;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
-import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
-import ru.practicum.shareit.user.service.UserService;
 
 import java.util.List;
 
@@ -31,13 +27,13 @@ public class ItemRepositoryTest {
     private UserRepository userRepository;
 
     @BeforeEach
-     void addItems() {
+    void addItems() {
         user = userRepository.save(new User(1L, "username", "email@email.com"));
         item = itemRepository.save(new Item(1L, "item name", "description", true, user.getId(), null));
     }
 
     @AfterEach
-     void deleteAll() {
+    void deleteAll() {
         itemRepository.deleteAll();
     }
 
