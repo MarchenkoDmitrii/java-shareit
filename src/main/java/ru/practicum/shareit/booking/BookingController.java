@@ -43,8 +43,7 @@ public class BookingController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BookingDtoResponse>> findAll
-            (@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ResponseEntity<List<BookingDtoResponse>> findAll(@RequestHeader("X-Sharer-User-Id") Long userId,
              @RequestParam(value = "state", defaultValue = "ALL") String bookingState,
              @RequestParam(value = "from", defaultValue = "0") Integer from,
              @RequestParam(value = "size", defaultValue = "10") Integer size) {
