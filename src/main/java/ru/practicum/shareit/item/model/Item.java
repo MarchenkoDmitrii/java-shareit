@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "items")
 @ToString
-@RequiredArgsConstructor
 @AllArgsConstructor
 public class Item {
 
@@ -33,4 +32,8 @@ public class Item {
 
     @Column(name = "request_id")
     private Long requestId;
+
+    public Item() {
+
+    }
 }

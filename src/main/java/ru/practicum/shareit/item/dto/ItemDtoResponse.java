@@ -21,7 +21,7 @@ public class ItemDtoResponse {
     private String description;
     @NonNull
     private Boolean available;
-    private Long owner;
+    private Long ownerId;
     private BookingDtoResponseForItems lastBooking;
     private List<CommentDtoOut> comments;
     private BookingDtoResponseForItems nextBooking;

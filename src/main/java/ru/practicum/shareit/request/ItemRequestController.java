@@ -10,11 +10,10 @@ import ru.practicum.shareit.request.service.ItemRequestService;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(path = "/requests")
 public class ItemRequestController {
     @Autowired
-    private final ItemRequestService requestService;
+    ItemRequestService requestService;
 
     @PostMapping
     public ItemRequestDtoResponse add(@RequestHeader("X-Sharer-User-Id") Long userId,

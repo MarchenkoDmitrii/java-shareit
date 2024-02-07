@@ -13,9 +13,7 @@ import javax.persistence.*;
 @Table(name = "users")
 @ToString
 @RequiredArgsConstructor
-@AllArgsConstructor
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
