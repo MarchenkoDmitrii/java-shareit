@@ -102,10 +102,6 @@ public class ItemServiceImplTest {
         assertEquals(itemNotFoundException.getMessage(), HttpStatus.FORBIDDEN.toString());
     }
 
-    @Test
-    void getAllUserItems() {
-
-    }
 
     @Test
     void getItemById() {
