@@ -2,9 +2,9 @@ version: '3.8'
 services:
   db:
     image: postgres:latest
-    container_name: postgres
+    container_name: db
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -20,7 +20,7 @@ services:
     depends_on:
       - db
     environment:
-      - BD=jdbc:postgresql://db:5432/postgres
+      - DB=jdbc:postgresql://db:5432/postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=root
   gateway:
