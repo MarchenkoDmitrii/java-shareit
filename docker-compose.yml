@@ -1,17 +1,16 @@
 version: '3.8'
 services:
-  gateway:
-    image: gateway
-    build: ./gateway
-    container_name: gateway
+  db:
+    image: postgres:latest
+    container_name: postgres
     ports:
-      - "8080:8080"
-    depends_on:
-      - server
-      - db
+      - "5432:5432"
     environment:
-      - SHAREIT_SERVER_URL=http://localhost:9090
-
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - DB_HOST=localhost
+      - DB_PORT=5432
   server:
     image: server
     build: ./server
@@ -21,16 +20,19 @@ services:
     depends_on:
       - db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/postgres
-
-  db:
-    image: postgres:13.7-alpine
-    container_name: db
-    ports:
-      - "6541:5432"
-    environment:
-      - POSTGRES_DB=postgres
+      - BD=jdbc:postgresql://db:5432/postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=root
-    volumes:
-      - /var/lib/postgresql/data/
+  gateway:
+    image: gateway
+    build: ./gateway
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - server
+    environment:
+      - SHAREIT_SERVER_URL=http://server:9090
+
+
+
