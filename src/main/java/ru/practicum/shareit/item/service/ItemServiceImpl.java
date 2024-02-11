@@ -3,6 +3,8 @@ package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,8 +50,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public List<ItemDtoResponse> getAllUserItems(Long userId) {
-        List<Item> itemList = itemRepository.findAllByOwner(userId);
+    public List<ItemDtoResponse> getAllUserItems(Long userId, Integer from, Integer size) {
+        Pageable pageable = PageRequest.of(from / size, size);
+        List<Item> itemList = itemRepository.findAllByOwner(userId, pageable);
         itemList.sort((o1, o2) -> Math.toIntExact(o1.getId() - o2.getId()));
         List<Long> idList = itemList.stream()
                 .map(Item::getId)
@@ -152,6 +155,7 @@ public class ItemServiceImpl implements ItemService {
     public Item findItemById(Long itemId) {
         return itemRepository.findById(itemId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
+
 
     private BookingDtoResponseForItems getLastBooking(List<BookingDtoResponse> bookings, LocalDateTime time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");

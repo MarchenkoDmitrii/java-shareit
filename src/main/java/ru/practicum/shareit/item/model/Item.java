@@ -1,6 +1,8 @@
 package ru.practicum.shareit.item.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -9,6 +11,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "items")
 @ToString
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Item {
 
     @Id
@@ -28,5 +32,6 @@ public class Item {
     private Long owner;
 
     @Column(name = "request_id")
-    private Long request;
+    private Long requestId;
+
 }

@@ -36,21 +36,28 @@ public class BookingController {
 
     @GetMapping("/{bookingId}")
     public ResponseEntity<BookingDtoResponse> findBookingById(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                                              @PathVariable("bookingId") Long bookingId) {
+                                                              @PathVariable("bookingId") Long bookingId
+    ) {
         return ResponseEntity.status(200)
                 .body(bookingService.findBookingByUserId(userId, bookingId));
     }
 
     @GetMapping
     public ResponseEntity<List<BookingDtoResponse>> findAll(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                                            @RequestParam(value = "state", defaultValue = "ALL") String bookingState) {
-        return ResponseEntity.status(200).body(new ArrayList<>(bookingService.findAll(userId, bookingState)));
+                                                            @RequestParam(value = "state", defaultValue = "ALL") String bookingState,
+                                                            @RequestParam(value = "from", defaultValue = "0") Integer from,
+                                                            @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        return ResponseEntity.status(200).body(new ArrayList<>(bookingService.findAll(userId, bookingState, from, size)));
     }
 
     @GetMapping("/owner")
-    public ResponseEntity<List<BookingDtoResponse>> getAllOwner(@RequestHeader("X-Sharer-User-Id") Long ownerId,
-                                                                @RequestParam(value = "state", defaultValue = "ALL") String bookingState) {
-        return ResponseEntity.status(200).body(new ArrayList<>(bookingService.findAllOwner(ownerId, bookingState)));
+    public ResponseEntity<List<BookingDtoResponse>> getAllOwner(
+            @RequestHeader("X-Sharer-User-Id") Long ownerId,
+            @RequestParam(value = "state", defaultValue = "ALL") String bookingState,
+            @RequestParam(value = "from", defaultValue = "0") Integer from,
+            @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        return ResponseEntity.status(200)
+                .body(new ArrayList<>(bookingService.findAllOwner(ownerId, bookingState, from, size)));
     }
 
 }

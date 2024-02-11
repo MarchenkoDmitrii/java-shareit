@@ -61,9 +61,13 @@ public class ItemController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ItemDtoResponse>> getItemsForOwner(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public ResponseEntity<List<ItemDtoResponse>> getItemsForOwner(
+            @RequestHeader("X-Sharer-User-Id") Long userId,
+            @RequestParam(value = "from", defaultValue = "0") Integer from,
+            @RequestParam(value = "size", defaultValue = "10") Integer size) {
+
         // Логика получения списка вещей для владельца
-        List<ItemDtoResponse> items = itemService.getAllUserItems(userId);
+        List<ItemDtoResponse> items = itemService.getAllUserItems(userId, from, size);
         return ResponseEntity.ok(items);
     }
 
