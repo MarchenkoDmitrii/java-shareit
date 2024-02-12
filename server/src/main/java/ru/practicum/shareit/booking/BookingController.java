@@ -18,15 +18,15 @@ public class BookingController {
 
     @PostMapping
     public ResponseEntity<BookingDtoResponse> add(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                                         @RequestBody BookingDto bookingDto) {
+                                                  @RequestBody BookingDto bookingDto) {
         BookingDtoResponse booking = bookingService.add(userId, bookingDto);
         return ResponseEntity.status(200).body(booking);
     }
 
     @PatchMapping("/{bookingId}")
     public ResponseEntity<BookingDtoResponse> update(@PathVariable Long bookingId,
-                                                            @RequestHeader("X-Sharer-User-Id") Long userId,
-                                                            @RequestParam("approved") Boolean aprove) {
+                                                     @RequestHeader("X-Sharer-User-Id") Long userId,
+                                                     @RequestParam("approved") Boolean aprove) {
         if (userId == null) {
             return ResponseEntity.status(500).build();
         }

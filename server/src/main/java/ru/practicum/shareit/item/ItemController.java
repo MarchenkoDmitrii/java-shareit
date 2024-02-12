@@ -27,7 +27,7 @@ public class ItemController {
 
     @PostMapping
     public ResponseEntity<ItemDto> add(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                           @RequestBody ItemDto itemDto) {
+                                       @RequestBody ItemDto itemDto) {
         if (userId == null) {
             ResponseEntity.status(400).build();
         }
@@ -37,8 +37,8 @@ public class ItemController {
 
     @PatchMapping("/{itemId}")
     public ResponseEntity<ItemDto> update(@PathVariable Long itemId,
-                                              @RequestHeader("X-Sharer-User-Id") Long userId,
-                                              @RequestBody ItemDto itemUpdateRequest) {
+                                          @RequestHeader("X-Sharer-User-Id") Long userId,
+                                          @RequestBody ItemDto itemUpdateRequest) {
         if (userId == null) {
             return ResponseEntity.status(500).build();
         }
