@@ -17,13 +17,13 @@ public class UserController {
     UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> addUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<User> add(@RequestBody UserDto userDto) {
         User user = userService.saveUser(userDto);
         return ResponseEntity.status(200).body(user);
     }
 
     @PatchMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable Long userId,
+    public ResponseEntity<User> update(@PathVariable Long userId,
                                            @RequestBody UserDto userDto) {
         // Логика обновления вещи
         User user = userService.updateUser(userId, userDto);
@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<User>> getAll() {
         // Логика получения информации о вещи по её идентификатору
         List<User> userDto = userService.getAllUsers();
 

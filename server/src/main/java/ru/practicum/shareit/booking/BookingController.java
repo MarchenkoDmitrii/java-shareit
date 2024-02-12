@@ -17,14 +17,14 @@ public class BookingController {
     private BookingService bookingService;
 
     @PostMapping
-    public ResponseEntity<BookingDtoResponse> addBooking(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ResponseEntity<BookingDtoResponse> add(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                          @RequestBody BookingDto bookingDto) {
         BookingDtoResponse booking = bookingService.add(userId, bookingDto);
         return ResponseEntity.status(200).body(booking);
     }
 
     @PatchMapping("/{bookingId}")
-    public ResponseEntity<BookingDtoResponse> updateBooking(@PathVariable Long bookingId,
+    public ResponseEntity<BookingDtoResponse> update(@PathVariable Long bookingId,
                                                             @RequestHeader("X-Sharer-User-Id") Long userId,
                                                             @RequestParam("approved") Boolean aprove) {
         if (userId == null) {
@@ -51,7 +51,7 @@ public class BookingController {
     }
 
     @GetMapping("/owner")
-    public ResponseEntity<List<BookingDtoResponse>> getAllOwner(
+    public ResponseEntity<List<BookingDtoResponse>> getAll(
             @RequestHeader("X-Sharer-User-Id") Long ownerId,
             @RequestParam(value = "state", defaultValue = "ALL") String bookingState,
             @RequestParam(value = "from", defaultValue = "0") Integer from,

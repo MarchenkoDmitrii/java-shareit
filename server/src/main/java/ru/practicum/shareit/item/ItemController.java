@@ -26,7 +26,7 @@ public class ItemController {
     private CommentService commentService;
 
     @PostMapping
-    public ResponseEntity<ItemDto> addItem(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ResponseEntity<ItemDto> add(@RequestHeader("X-Sharer-User-Id") Long userId,
                                            @RequestBody ItemDto itemDto) {
         if (userId == null) {
             ResponseEntity.status(400).build();
@@ -36,7 +36,7 @@ public class ItemController {
     }
 
     @PatchMapping("/{itemId}")
-    public ResponseEntity<ItemDto> updateItem(@PathVariable Long itemId,
+    public ResponseEntity<ItemDto> update(@PathVariable Long itemId,
                                               @RequestHeader("X-Sharer-User-Id") Long userId,
                                               @RequestBody ItemDto itemUpdateRequest) {
         if (userId == null) {
@@ -72,7 +72,7 @@ public class ItemController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ItemDtoResponse>> searchItems(@RequestParam("text") String searchText) {
+    public ResponseEntity<List<ItemDtoResponse>> search(@RequestParam("text") String searchText) {
         // Логика поиска вещей по тексту в названии или описании
         List<ItemDtoResponse> foundItems = itemService.searchItemsByText(searchText);
         return ResponseEntity.ok(foundItems);
