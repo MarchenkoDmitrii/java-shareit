@@ -1,0 +1,41 @@
+
+version: '3.8'
+services:
+  server:
+    build: ./server
+    image: server
+    container_name: server
+    ports:
+      - "9090:9090"
+    depends_on:
+      - db
+    environment:
+      - DB=jdbc:postgresql://db:5432/postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - DB_HOST=localhost
+      - DB_PORT=5432
+  gateway:
+    build: ./gateway
+    image: gateway
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - server
+    environment:
+      - SHAREIT_SERVER_URL=http://server:9090
+  db:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - DB_HOST=localhost
+      - DB_PORT=5432
+
+
